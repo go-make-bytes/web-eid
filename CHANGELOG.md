@@ -51,6 +51,17 @@ shared libraries below.
   service depends on; a third has no fix available yet and was already present before the move, and
   the vulnerability scanner reports nothing this service's own code can reach.
 
+### Changed — the shared libraries move to their current releases
+
+`go-platform-kit` v1.11.3, `go-authbyte` v0.23.1, `go-web-eid` v0.15.4, `go-gdpr-audit` v1.1.5 and
+`go-sec-events` v1.2.1. No endpoint, field, error or setting changes with them, nothing in your
+configuration needs touching, and this service's own behaviour is unchanged — token validation,
+certificate checks and the OCSP path all behave exactly as before, and the OCSP parsing code in
+`go-web-eid` is byte-identical across its own dependency move. Two crossed releases are worth
+naming: `go-authbyte` v0.23.0 added a way to tell a natural person's identity code from an
+organisation's, and `go-sec-events` v1.2.0 allows a security event to be emitted from work with no
+request behind it. Both are additions to the libraries.
+
 ## v0.1.0
 
 Initial code.

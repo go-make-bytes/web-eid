@@ -5,11 +5,11 @@ go 1.27.0
 require (
 	azugo.io/azugo v0.38.1
 	azugo.io/core v0.38.1
-	github.com/gmb-lib/go-authbyte v0.22.0
-	github.com/gmb-lib/go-gdpr-audit v1.1.4
-	github.com/gmb-lib/go-platform-kit v1.11.2
-	github.com/gmb-lib/go-sec-events v1.1.4
-	github.com/gmb-lib/go-web-eid v0.15.3
+	github.com/gmb-lib/go-authbyte v0.23.1
+	github.com/gmb-lib/go-gdpr-audit v1.1.5
+	github.com/gmb-lib/go-platform-kit v1.11.3
+	github.com/gmb-lib/go-sec-events v1.2.1
+	github.com/gmb-lib/go-web-eid v0.15.4
 	github.com/go-quicktest/qt v1.102.0
 	github.com/spf13/cobra v1.10.2
 	github.com/spf13/viper v1.21.0
@@ -49,7 +49,7 @@ require (
 	github.com/leodido/go-urn v1.5.0 // indirect
 	github.com/mattn/go-colorable v0.1.15 // indirect
 	github.com/mattn/go-isatty v0.0.24 // indirect
-	github.com/molecule-man/go-brrr v1.0.1 // indirect
+	github.com/molecule-man/go-brrr v1.1.0 // indirect
 	github.com/oklog/ulid/v2 v2.1.2 // indirect
 	github.com/pelletier/go-toml/v2 v2.4.3 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
@@ -89,8 +89,8 @@ require (
 	golang.org/x/net v0.59.0 // indirect
 	golang.org/x/sys v0.48.0 // indirect
 	golang.org/x/text v0.42.0 // indirect
-	google.golang.org/genproto/googleapis/api v0.0.0-20260908043556-f8649ddbbfe6 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20260908043556-f8649ddbbfe6 // indirect
+	google.golang.org/genproto/googleapis/api v0.0.0-20260911204522-f61a6ca850bd // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20260911204522-f61a6ca850bd // indirect
 	google.golang.org/grpc v1.83.2 // indirect
 	google.golang.org/protobuf v1.36.12 // indirect
 )
