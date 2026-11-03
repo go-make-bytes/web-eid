@@ -42,8 +42,8 @@ github.com/gmb-lib/go-sec-events v1.2.2 h1:UgkM4JoCVMnIvYC8X9hM3pcCEW0voz7++HlW8
 github.com/gmb-lib/go-sec-events v1.2.2/go.mod h1:2AZDHNJM6wO8gmec5KU+8JlFLPS2AkWQkF+aId6uM1M=
 github.com/gmb-lib/go-web-eid v0.15.5 h1:/++XO5hWf//HymEWtz+Upo8XW0PMnPAlbWx6IX9YFFE=
 github.com/gmb-lib/go-web-eid v0.15.5/go.mod h1:GqgZ87pblFo2bR9eoK3nDfVTK2tFQ14e25oranE3bcA=
-github.com/go-jose/go-jose/v4 v4.1.5 h1:RjgjO2LOtWOJKUC5wpwY9LR3B3vwVAz6JS2YHfYU6eA=
-github.com/go-jose/go-jose/v4 v4.1.5/go.mod h1:x4oUasVrzR7071A4TnHLGSPpNOm2a21K9Kf04k1rs08=
+github.com/go-jose/go-jose/v4 v4.1.6 h1:sNRkftxFJxwsILiQukqp5z83QBSmntVwmgRY7AqBDO4=
+github.com/go-jose/go-jose/v4 v4.1.6/go.mod h1:x4oUasVrzR7071A4TnHLGSPpNOm2a21K9Kf04k1rs08=
 github.com/go-logr/logr v1.2.2/go.mod h1:jdQByPbusPIv2/zmleS9BjJVeZ6kBagPoEUsqbVz/1A=
 github.com/go-logr/logr v1.4.4 h1:tG4xh9yMsRCAiodLVTxyrkzSZ9+o0L1Kg/+cPVcbP/8=
 github.com/go-logr/logr v1.4.4/go.mod h1:9T104GzyrTigFIr8wt5mBrctHMim0Nb2HLGrmQ40KvY=
