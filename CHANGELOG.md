@@ -3,6 +3,24 @@
 Notable changes to this service, newest first, per release. This file is written for whoever
 runs the service or integrates against it.
 
+## v0.2.0
+
+The service now runs on **Go 1.27.4** and **azugo v0.50.2**. Nothing about the API or the
+configuration changes.
+
+### Changed
+
+- **Go 1.27.4** (was 1.27.2), both in `go.mod` and as the image's default build toolchain
+  (`ARG GO_VERSION` in the `Dockerfile`). Rebuild the image to pick it up.
+- **Libraries:** azugo → v0.50.2 (core v0.50.1), `go-authbyte` → v0.46.0, `go-platform-kit` →
+  v1.13.0, `go-sec-events` → v1.3.0, `go-gdpr-audit` → v1.2.0, `go-web-eid` → v0.16.0.
+- **Request bodies are held to the framework's limit:** a body over `SERVER_MAX_REQUEST_BODY_SIZE`
+  (4 MiB when unset) is refused with 413. No route of this service sets a limit of its own; its
+  bodies are small.
+- **Audit:** if a request body cannot be read when the audit step looks for the certificate's
+  subject, the response the caller already received is unchanged, the personal-data access record
+  for that request is skipped, and a warning is logged without any body content.
+
 ## v0.1.2
 
 A security release. **The service now builds with Go 1.27.2**, and its libraries move to their Go
