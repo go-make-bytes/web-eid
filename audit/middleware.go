@@ -97,9 +97,17 @@ func authorizedID(ctx *azugo.Context) string {
 // reqCertSubject extracts the eID national identifier from the first present
 // base64-DER certificate field in the request body, or "" when none can be
 // parsed. The raw id is returned for pseudonymization by the caller; it is never
-// logged itself.
+// logged itself. The handler has already answered when this runs, so a body
+// that cannot be read (over the request size limit) leaves the response as it
+// is: the subject is "" and a warning without any body content is logged.
 func reqCertSubject(ctx *azugo.Context, fields ...string) string {
-	body := ctx.Body.Bytes()
+	body, err := ctx.Body.Bytes()
+	if err != nil {
+		ctx.Log().Warn("audit: request body unreadable, certificate subject not recorded")
+
+		return ""
+	}
+
 	if len(body) == 0 {
 		return ""
 	}

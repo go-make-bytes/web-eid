@@ -2,6 +2,7 @@ package audit
 
 import (
 	"fmt"
+	"strings"
 	"sync"
 	"testing"
 	"time"
@@ -199,4 +200,72 @@ func TestMiddlewareDispatch(t *testing.T) {
 	qt.Assert(t, qt.IsNotNil(sign))
 	qt.Check(t, qt.Equals(sign.EventType, eventSigningCertificate))
 	qt.Check(t, qt.Equals(sign.Outcome, broker.OutcomeFailure))
+}
+
+// reqCertSubject runs after the handler has answered. A body the framework will
+// not read (over the request size limit) or one that is not a JSON object gives
+// an empty subject and leaves the response and the security event as they are.
+func TestReqCertSubjectBodyCases(t *testing.T) {
+	const limit = 64
+
+	tests := []struct {
+		name string
+		body []byte
+	}{
+		{"over the limit", []byte(`{"certificate":"` + strings.Repeat("A", 4*limit) + `"}`)},
+		{"malformed", []byte(`{"certificate":`)},
+		{"not an object", []byte(`[1,2,3]`)},
+		{"empty", nil},
+		{"no certificate field", []byte(`{"other":"x"}`)},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			sink := &captureSink{}
+			rec := New(secevents.NewEmitter(sink), nil, nil, zap.NewNop())
+
+			var subject string
+			var seen bool
+
+			app := azugo.NewTestApp()
+			app.Use(func(next azugo.RequestHandler) azugo.RequestHandler {
+				return func(ctx *azugo.Context) {
+					ctx.SetMaxBodySize(limit)
+					next(ctx)
+				}
+			})
+			app.Use(rec.Middleware())
+			app.Post("/sign/certificate", func(ctx *azugo.Context) {
+				ctx.StatusCode(fasthttp.StatusOK)
+				ctx.Text("done")
+			})
+			// The recorder acts on the same path; read the subject the way it does.
+			app.Post("/sign/finalize", func(ctx *azugo.Context) {
+				subject = reqCertSubject(ctx, "certificate")
+				seen = true
+				ctx.StatusCode(fasthttp.StatusOK)
+				ctx.Text("done")
+			})
+			app.Start(t)
+			defer app.Stop()
+			tc := app.TestClient()
+
+			resp, err := tc.Post("/sign/certificate", tt.body)
+			qt.Assert(t, qt.IsNil(err))
+			qt.Check(t, qt.Equals(resp.StatusCode(), fasthttp.StatusOK))
+			fasthttp.ReleaseResponse(resp)
+
+			ev := sink.last()
+			qt.Assert(t, qt.IsNotNil(ev))
+			qt.Check(t, qt.Equals(ev.EventType, eventSigningCertificate))
+			qt.Check(t, qt.Equals(ev.Outcome, broker.OutcomeSuccess))
+
+			resp2, err := tc.Post("/sign/finalize", tt.body)
+			qt.Assert(t, qt.IsNil(err))
+			qt.Check(t, qt.Equals(resp2.StatusCode(), fasthttp.StatusOK))
+			fasthttp.ReleaseResponse(resp2)
+			qt.Check(t, qt.IsTrue(seen))
+			qt.Check(t, qt.Equals(subject, ""))
+		})
+	}
 }
